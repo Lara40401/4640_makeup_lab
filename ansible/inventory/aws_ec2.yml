@@ -4,6 +4,7 @@ regions:
 # Set individual Variables
 compose:
   ansible_host: public_dns_name
+  
 # Set the Inventory Hostname to be the EC2 Tag Name value without any prefix or separator
 hostnames:
   - name: tag:Name
