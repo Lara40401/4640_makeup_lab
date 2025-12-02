@@ -45,5 +45,4 @@ variable "subnet_id" {
 variable "tags" {
   description = "Tag"
   type = string
-  default = {}
 }
