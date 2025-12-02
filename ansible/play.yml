@@ -1,42 +1,47 @@
-- name: Setup Redis and Frontend Servers
+- name: Setup Web and Database Servers
   hosts:
-    - server_role_redis_server
-    - server_role_frontend_server
+    - server_role_rocky_server
+    - server_role_debian_server
   become: true
   gather_facts: yes # Collect facts only once for the entire play
 
   vars:
     # Set remote_user conditionally for each server role
-    ansible_user: "{{ 'rocky' if 'server_role_redis_server' in group_names else 'ubuntu' }}"
+    ansible_user: "{{ 'rocky' if 'server_role_rocky_server' in group_names else 'ubuntu' }}"
   tasks:
     # Tasks for Redis Servers
     - name: Install redis on Rocky Linux
-      ansible.builtin.dnf:
-        name: redis
+      ansible.builtin.apt:
+        name: nginx
         state: present
-      when: "'server_role_redis_server' in group_names and ansible_facts['distribution'] == 'Rocky'"
+      when: "'server_role_rocky_server' in group_names and ansible_facts['distribution'] == 'Rocky'"
     # Tasks for Frontend Servers
     - name: Install nginx on Ubuntu
       ansible.builtin.apt:
         name: nginx
         state: present
-      when: "'server_role_frontend_server' in group_names and ansible_facts['distribution'] == 'Ubuntu'"
+      when: "'server_role_debian_server' in group_names and ansible_facts['distribution'] == 'Debian'"
     # Create index.html using a template
-    - name: create index.html
+    - name: create index.html for Debian
       ansible.builtin.template:
         src: index.html.j2 # Ensure you have the file "index.html.j2" in your templates directory
         dest: /var/www/html/index.html
-      when: "'server_role_frontend_server' in group_names and ansible_facts['distribution'] == 'Ubuntu'"
+      when: "'server_role_debian_server' in group_names and ansible_facts['distribution'] == 'Debian'"
+    - name: create index.html for Rocky
+      ansible.builtin.template:
+        src: index_rocky.html.j2 
+        dest: /var/www/html/index.html
+      when: "'server_role_rocky_server' in group_names and ansible_facts['distribution'] == 'Rocky'"
     # Create nginx configuration file
     - name: create nginx configuration
       ansible.builtin.copy:
         src: default.conf # Ensure you have the file "default.conf" in your files directory
         dest: /etc/nginx/sites-available/default
-      when: "'server_role_frontend_server' in group_names and ansible_facts['distribution'] == 'Ubuntu'"
+      # when: "'server_role_debian_server' in group_names and ansible_facts['distribution'] == 'Debian'"
     # Enable nginx configuration by creating a symlink
     - name: enable nginx configuration
       ansible.builtin.file:
         src: /etc/nginx/sites-available/default
         dest: /etc/nginx/sites-enabled/default
         state: link
-      when: "'server_role_frontend_server' in group_names and ansible_facts['distribution'] == 'Ubuntu'"
+      # when: "'server_role_debian_server' in group_names and ansible_facts['distribution'] == 'Debian'"
