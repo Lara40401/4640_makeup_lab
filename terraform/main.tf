@@ -127,7 +127,7 @@ module "rocky" {
   ec2_name               = "rocky"
   ec2_role               = "rocky-server"
   ami                    = "ami-093bd987f8e53e1f2"
-  key_name               = "aws-4640"                  # SSH key name
+  key_name               = "aws"                  # SSH key name
   vpc_security_group_ids = [aws_security_group.web.id] # Pass security group IDs here
   subnet_id              = aws_subnet.web.id           # Pass the subnet ID here
   tags = {
@@ -142,7 +142,7 @@ module "debian" {
   ec2_name               = "debian"
   ec2_role               = "debian-server"
   ami                    = data.aws_ami.debian.id      # data source AMI
-  key_name               = "aws-4640"                  # SSH key name
+  key_name               = "aws"                  # SSH key name
   vpc_security_group_ids = [aws_security_group.web.id] # Pass security group IDs here
   subnet_id              = aws_subnet.web.id           # Pass the subnet ID here
   tags = {
