@@ -41,3 +41,9 @@ variable "subnet_id" {
   description = "The ID of the subnet to associate the EC2 instance with"
   type        = string
 }
+
+variable "tags" {
+  description = "Tag"
+  type = string
+  default = {}
+}

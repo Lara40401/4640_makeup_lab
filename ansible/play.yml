@@ -11,7 +11,7 @@
   tasks:
     # Tasks for Redis Servers
     - name: Install redis on Rocky Linux
-      ansible.builtin.apt:
+      ansible.builtin.yum:
         name: nginx
         state: present
       when: "'server_role_rocky_server' in group_names and ansible_facts['distribution'] == 'Rocky'"
