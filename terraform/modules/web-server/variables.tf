@@ -44,5 +44,5 @@ variable "subnet_id" {
 
 variable "tags" {
   description = "Tag"
-  type = string
+  type = map(string)
 }

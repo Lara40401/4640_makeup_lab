@@ -3,15 +3,15 @@ locals {
   project_name = "lab_week_11"
 }
 
-# get the most recent ami for Ubuntu 25.04 owned by amazon
+# get the most recent ami for Debian
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami
-data "aws_ami" "ubuntu" {
+data "aws_ami" "debian" {
   most_recent = true
   owners      = ["amazon"]
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd-gp3/*-25.04-amd64-server-*"]
+    values = ["debian-13-amd64-*"]
   }
 }
 
@@ -150,12 +150,12 @@ module "debian" {
   }
 }
 
-output "frontend" {
-  description = "output for frontend ec2"
-  value       = module.frontend.instance_ip_addr
+output "debian" {
+  description = "output for debian ec2"
+  value       = module.debian.instance_ip_addr
 }
 
-output "redis" {
-  description = "output for frontend ec2"
-  value       = module.redis.instance_ip_addr
+output "rocky" {
+  description = "output for rocky ec2"
+  value       = module.rocky.instance_ip_addr
 }
