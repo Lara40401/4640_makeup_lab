@@ -7,16 +7,16 @@
 
   vars:
     # Set remote_user conditionally for each server role
-    ansible_user: "{{ 'rocky' if 'server_role_rocky_server' in group_names else 'ubuntu' }}"
+    ansible_user: "{{ 'rocky' if 'server_role_rocky_server' in group_names else 'debian' }}"
   tasks:
-    # Tasks for Redis Servers
-    - name: Install redis on Rocky Linux
+    # Tasks for Rocky Servers
+    - name: Install nginx on Rocky Linux
       ansible.builtin.yum:
         name: nginx
         state: present
       when: "'server_role_rocky_server' in group_names and ansible_facts['distribution'] == 'Rocky'"
     # Tasks for Frontend Servers
-    - name: Install nginx on Ubuntu
+    - name: Install nginx on Debian
       ansible.builtin.apt:
         name: nginx
         state: present
