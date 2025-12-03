@@ -1,15 +1,15 @@
-- name: Setup Redis Server
-  hosts: server_role_redis_server
+- name: Setup Rocky Server
+  hosts: server_role_rocky_server
   become: true
   vars: 
     ansible_user: rocky
   roles:
-    - redis
+    - rocky
 
-- name: Setup Frontend Server
-  hosts: server_role_frontend_server
+- name: Setup Debian Server
+  hosts: server_role_debian_server
   become: true
   vars: 
-    ansible_user: ubuntu
+    ansible_user: debian
   roles:
-    - frontend
+    - debian
